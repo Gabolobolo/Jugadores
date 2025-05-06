@@ -1,0 +1,64 @@
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class Ventana {
+    private JPanel principal;
+    private JSpinner spCodigo;
+    private JComboBox cboPosicion;
+    private JTextField txtNombre;
+    private JTextField txtRendimiento;
+    private JButton btnRegistrar;
+    private JTextArea txtListado;
+    private JButton btnBuscar;
+    private JButton btnMostrar;
+    private JSpinner spBuscar;
+    private Equipo equipo1 = new Equipo();
+
+    public Ventana() {
+        btnRegistrar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int codigo = Integer.parseInt(spCodigo.getValue().toString());
+                String nombre = txtNombre.getText();
+                float rendimiento = Float.parseFloat(txtRendimiento.getText());
+                String posicion = cboPosicion.getSelectedItem().toString();
+                Jugador j = new Jugador(codigo, nombre, rendimiento, posicion);
+                try {
+                    equipo1.agregarJugador(j);
+                    txtListado.setText(equipo1.listarJugadores());
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                }
+            }
+        });
+
+        btnBuscar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int codigo = Integer.parseInt(spCodigo.getValue().toString());
+                try {
+                    Jugador j = equipo1.buscarCodigo(codigo);
+                    txtListado.setText(j.toString());
+                } catch (Exception ex){
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                }
+            }
+        });
+
+        btnMostrar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                txtListado.setText(equipo1.listarJugadores());
+            }
+        });
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Ventana");
+        frame.setContentPane(new Ventana().principal);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
+}
