@@ -1,0 +1,64 @@
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Equipo {
+
+    private List<Jugador> lista;
+    public Equipo() {
+        lista = new ArrayList<Jugador>();
+    }
+
+    public void agregarJugador(Jugador j) throws Exception {
+        for(Jugador x :lista){
+           if(x.getCodigo() == j.getCodigo()){
+               throw new Exception("Ya existe este código");
+           }
+
+        }
+        lista.add(j);
+        ordenar();
+    }
+    public void ordenar() {
+        Jugador aux;
+        for(int i=0; i<lista.size() -1; i++)
+            for(int j=i+1; j<lista.size(); j++){
+              if(lista.get(i).getCodigo()>lista.get(j).getCodigo()){
+                  aux = lista.get(i);
+                  lista.set(i,lista.get(j));
+                  lista.set(j,aux);
+              }
+            }
+    }
+
+    public String listarJugadores(){
+        StringBuilder sb = new StringBuilder();
+        for(Jugador j:lista){
+            sb.append(j.toString());
+        }
+        return sb.toString();
+    }
+
+    public Jugador buscarCodigo(int codigo) throws Exception {
+        if(codigo < lista.getFirst().getCodigo()
+            || codigo > lista.getLast().getCodigo()){
+            throw new Exception("No existe este codigo.");
+        }
+        int inf=0;
+        int sup = lista.size() -1;
+        int centro;
+
+        while(inf <= sup){
+            centro = (inf+sup)/2;
+            if(lista.get(centro).getCodigo() == codigo){
+                return lista.get(centro);
+            }else if(codigo<lista.get(centro).getCodigo()){
+                sup = centro-1;
+            }else{
+                inf = centro+1;
+            }
+            }
+        throw new Exception("No existe este codigo.");
+        }
+
+        }
